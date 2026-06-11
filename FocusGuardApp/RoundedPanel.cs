@@ -60,7 +60,7 @@ namespace FocusGuardApp
                 this.Region = new Region(path);
             }
         }
-
+        // рамка
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);

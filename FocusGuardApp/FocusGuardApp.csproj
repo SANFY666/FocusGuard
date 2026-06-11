@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomAlertForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomAlertForm.Designer.cs">
+      <DependentUpon>CustomAlertForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +66,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TimeSession.cs" />
+    <EmbeddedResource Include="CustomAlertForm.resx">
+      <DependentUpon>CustomAlertForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
