@@ -43,4 +43,4 @@
 
 1. Скопіюй репозиторій на свій комп'ютер, виконавши цю команду в терміналі:
    ```bash
-   git clone [https://github.com/SANFY666/FocusGuard.git](https://github.com/SANFY666/FocusGuard.git)
+   git clone https://github.com/SANFY666/FocusGuard.git
