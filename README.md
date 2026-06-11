@@ -42,5 +42,4 @@
 ## 🚀 Як запустити проєкт (Локально)
 
 1. Зклонуйте репозиторій на свій комп'ютер:
-   ```bash
    git clone [https://github.com/SANFY666/FocusGuard.git](https://github.com/SANFY666/FocusGuard.git)
