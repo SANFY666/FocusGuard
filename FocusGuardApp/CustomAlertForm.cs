@@ -10,15 +10,20 @@ namespace FocusGuardApp
         {
             InitializeComponent();
 
-            lblMessage.AutoSize = false;
-            lblMessage.Size = new Size(340, 130);
-            lblMessage.Location = new Point((this.ClientSize.Width - lblMessage.Width) / 2, 15);
-            lblMessage.TextAlign = ContentAlignment.MiddleCenter;
-            lblMessage.Text = message;
-            
+            string[] parts = message.Split(new[] { "\n\n" }, StringSplitOptions.None);
+            if (parts.Length > 1)
+            {
+                this.Text = parts[0];
+                lblMessage.Text = parts[1];
+            }
+            else
+            {
+                this.Text = "Сповіщення FocusGuard";
+                lblMessage.Text = message;
+            }
+
             btnOk.BackColor = themeColor;
-            btnOk.Location = new Point((this.ClientSize.Width - btnOk.Width) / 2, lblMessage.Bottom + 5);
-            btnOk.DialogResult = DialogResult.OK;
+            btnOk.ForeColor = Color.FromArgb(33, 33, 33);
         }
 
         private void btnOk_Click(object sender, EventArgs e)

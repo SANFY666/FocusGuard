@@ -14,7 +14,24 @@ namespace FocusGuardApp
 
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+
+            SQLitePCL.Batteries.Init();
+
+            try
+            {
+                DatabaseManager.InitializeDatabase();
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    errorMessage += "\n\nСправжня причина:\n" + ex.InnerException.Message;
+                }
+
+                MessageBox.Show($"Помилка бази даних при старті:\n{errorMessage}", "Критична помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             cmbTheme.SelectedIndex = 0; // зелена тема за замовчуванням
 
@@ -32,9 +49,21 @@ namespace FocusGuardApp
         {
             currentThemeColor = newColor;
             roundedPanel1.BorderColor = newColor;
-            btnStartSession.BackColor = newColor;
-            btnStartSession.ForeColor = Color.FromArgb(33, 33, 33);
             panelProgressFill.BackColor = newColor;
+
+            Button[] accentButtons = {
+                btnStartSession,
+                btnPresetGame,
+                btnPresetRead,
+                btnPresetCode,
+                btnOpenStatistics
+            };
+
+            foreach (var btn in accentButtons)
+            {
+                btn.BackColor = newColor;
+                btn.ForeColor = Color.FromArgb(33, 33, 33);
+            }
         }
 
         private void BtnStartSession_Click(object sender, EventArgs e)
@@ -42,7 +71,7 @@ namespace FocusGuardApp
             if (!isSessionActive)
             {
                 // старт
-                string activity = cmbActivity.SelectedItem.ToString();
+                string activity = cmbActivity.Text; 
                 int plannedTime = (int)numPlannedMinutes.Value;
 
                 currentSession = new TimeSession(activity, plannedTime);
@@ -62,6 +91,32 @@ namespace FocusGuardApp
                 sessionTimer.Stop();
                 isSessionActive = false;
 
+                // збереження данних у базу
+
+                // час
+                int actualMinutes = currentSession.ElapsedSeconds / 60;
+                if (actualMinutes == 0 && currentSession.ElapsedSeconds > 0)
+                {
+                    actualMinutes = 1;
+                }
+
+                string rawActivity = currentSession.ActivityName;
+                string category = "Загальне";
+                string activityName = rawActivity;
+
+                if (rawActivity.Contains(" / "))
+                {
+                    var parts = rawActivity.Split(new[] { " / " }, StringSplitOptions.RemoveEmptyEntries);
+                    activityName = parts[0].Trim();
+                    if (parts.Length > 1)
+                    {
+                        category = parts[1].Trim();
+                    }
+                }
+
+                //інфо в базу
+                DatabaseManager.AddSession(category, activityName, actualMinutes);
+
                 string alertText = $"Активність завершено!\n\n{currentSession.GetSessionSummary()}";
                 using (CustomAlertForm alert = new CustomAlertForm(alertText, currentThemeColor))
                 {
@@ -76,9 +131,7 @@ namespace FocusGuardApp
                 ApplyAccentColor(currentThemeColor);
 
                 lblTimerStatus.Text = "Очікування старту...";
-                lblTimerStatus.ForeColor = Color.White; 
-
-                // лінія 0
+                lblTimerStatus.ForeColor = Color.White;
                 panelProgressFill.Width = 0;
             }
         }
@@ -143,6 +196,35 @@ namespace FocusGuardApp
                 case 3: // червоний
                     ApplyAccentColor(Color.FromArgb(231, 76, 60));
                     break;
+            }
+        }
+
+        private void btnPresetGame_Click_1(object sender, EventArgs e)
+        {
+            cmbActivity.Text = "Brawl Stars / Ігри";
+            numPlannedMinutes.Value = 40; // 40 хвилин
+            btnStartSession.PerformClick();
+        }
+
+        private void btnPresetRead_Click(object sender, EventArgs e)
+        {
+            cmbActivity.Text = "Серіали / YouTube";
+            numPlannedMinutes.Value = 60;
+            btnStartSession.PerformClick();
+        }
+
+        private void btnPresetCode_Click(object sender, EventArgs e)
+        {
+            cmbActivity.Text = "Програмування / Навчання";
+            numPlannedMinutes.Value = 25; 
+            btnStartSession.PerformClick();
+        }
+
+        private void btnOpenStatistics_Click(object sender, EventArgs e)
+        {
+            using (StatisticsForm statForm = new StatisticsForm())
+            {
+                statForm.ShowDialog();
             }
         }
     }

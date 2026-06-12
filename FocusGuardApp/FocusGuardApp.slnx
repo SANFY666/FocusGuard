@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="FocusGuardApp.csproj" Id="ff0e4215-28b0-4813-aab0-d37b4d19bca4" />
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="FocusGuardApp.csproj" Id="ff0e4215-28b0-4813-aab0-d37b4d19bca4">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
 </Solution>

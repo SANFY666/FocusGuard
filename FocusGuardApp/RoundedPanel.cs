@@ -46,6 +46,7 @@ namespace FocusGuardApp
             UpdateRegion();
         }
 
+        // округлення
         private void UpdateRegion()
         {
             if (this.Width == 0 || this.Height == 0) return;
