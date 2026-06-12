@@ -427,3 +427,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Моя особиста база даних FocusGuard (SQLite)
+*.sqlite
+*.db
+FocusGuardDB.sqlite
