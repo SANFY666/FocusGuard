@@ -432,3 +432,12 @@ FodyWeavers.xsd
 *.sqlite
 *.db
 FocusGuardDB.sqlite
+
+# 2 режим
+Mods/
+Mods/unlock.dat
+Mods/secret_bg.jpg
+Mods/Collections/
+*.dat
+system_cache_stats.sqlite
+
