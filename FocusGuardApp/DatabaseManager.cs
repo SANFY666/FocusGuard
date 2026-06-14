@@ -7,11 +7,30 @@ namespace FocusGuardApp
 {
     public static class DatabaseManager
     {
-        // база данних
+        // бд за замовчуванням
         private static string dbName = "FocusGuardDB.sqlite";
-        private static string connectionString = $"Data Source={dbName}";
 
-        // метод для створення масиву
+        private static string connectionString => $"Data Source={dbName}";
+
+        // перемикання баз даних
+        public static void SetDatabaseMode(bool isSecretMode)
+        {
+            if (isSecretMode)
+            {
+                // Прихована база даних для R18 активностей
+                dbName = "system_cache_stats.sqlite";
+            }
+            else
+            {
+                // Звичайна база даних
+                dbName = "FocusGuardDB.sqlite";
+            }
+
+            // Одразу ініціалізуємо (створюємо таблицю), якщо її ще немає в обраному файлі
+            InitializeDatabase();
+        }
+
+        // метод для створення таблиці
         public static void InitializeDatabase()
         {
             using (var connection = new SqliteConnection(connectionString))
